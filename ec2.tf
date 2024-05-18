@@ -1,6 +1,6 @@
 resource "aws_instance" "ec2" {
     ami = "ami-090252cbe067a9e58"
-    vpc_securitygroup_ids = ["sg-055eae504b31da7bd"]
+    vpc_security_group_ids = ["sg-055eae504b31da7bd"]
     instance_type = "t3.micro"
 
     tags = {
@@ -11,4 +11,7 @@ resource "aws_instance" "ec2" {
 
     }
 
+    provisioner "local-exec" {
+        command = "ansible-playbook -i private_ips.txt web.yaml"
+}
 }
