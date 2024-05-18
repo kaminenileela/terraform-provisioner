@@ -11,7 +11,24 @@ resource "aws_instance" "ec2" {
 
     }
 
-    provisioner "local-exec" {
-        command = "ansible-playbook -i private_ips.txt web.yaml"
-}
+    # provisioner "local-exec" {
+#          command = "ansible-playbook -i private_ips.txt web.yaml"
+# }
+
+    connection {
+        type  = "ssh"
+        user  = "ec2-user"
+        password = "DevOps321"
+        host = self.public_ip
+    }
+    provisioner "remote-exec" {
+        inline = [
+            "sudo dnf install ansible -y",
+            "sudo dnf install nginx -y",
+            "sudo systemctl start nginx"
+        ]
+
+    }
+
+
 }
